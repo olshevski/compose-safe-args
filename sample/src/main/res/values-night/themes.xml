@@ -1,0 +1,7 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.ComposeSafeArgs" parent="android:Theme.Material">
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/purple_200</item>
+    </style>
+</resources>

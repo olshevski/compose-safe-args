@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.ComposeSafeArgs" parent="android:Theme.Material.Light">
+        <item name="android:statusBarColor">@color/purple_500</item>
+    </style>
+
+    <style name="Theme.ComposeSafeArgs.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+</resources>
