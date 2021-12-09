@@ -59,7 +59,7 @@ android {
 
 dependencies {
     implementation(projects.apiCompose)
-    ksp(projects.processor)
+    ksp(projects.ksp)
 
     implementation(Deps.Compose.Material)
     debugImplementation(Deps.Compose.UiTooling)

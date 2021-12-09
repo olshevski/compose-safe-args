@@ -32,6 +32,6 @@ dependencyResolutionManagement {
 rootProject.name = "compose-safe-args"
 include(":api")
 include(":api-compose")
-include(":processor")
+include(":ksp")
 include(":sample")
 include(":tests")

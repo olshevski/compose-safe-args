@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    `maven-publish`
+    `publishing-config`
 }
 
 android {
@@ -45,15 +45,4 @@ android {
 dependencies {
     api(projects.api)
     api(Deps.Navigation.Compose)
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("apiCompose") {
-                from(components["release"])
-                artifactId = "api-compose"
-            }
-        }
-    }
 }

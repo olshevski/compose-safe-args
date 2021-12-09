@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation(projects.apiCompose)
-    ksp(projects.processor)
+    ksp(projects.ksp)
     testImplementation(Deps.Kotest.RunnerJunit5)
     testImplementation(Deps.Kotest.FrameworkDataset)
 }

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    `maven-publish`
+    `publishing-config`
 }
 
 android {
@@ -43,15 +43,4 @@ android {
 dependencies {
     api(Deps.Navigation.Runtime)
     testImplementation(Deps.Kotest.RunnerJunit5)
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("api") {
-                from(components["release"])
-                artifactId = "api"
-            }
-        }
-    }
 }
