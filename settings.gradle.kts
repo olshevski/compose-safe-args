@@ -15,6 +15,7 @@ pluginManagement {
         kotlin("android") version kotlinPluginVersion
         kotlin("jvm") version kotlinPluginVersion
 
+        id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
         id("com.google.devtools.ksp") version "1.5.31-1.0.1"
         id("com.github.ben-manes.versions") version "0.39.0"
     }
