@@ -4,7 +4,7 @@ Yet another attemp to add safe arguments to [Compose Navigation](https://develop
 
 ## Why
 
-Since routes in Navigation Component don't support safe arguments out of the box, as well as require a lot of boilerplate code this library was meant to be made.
+Since routes in Navigation Component don't support safe arguments out of the box, as well as require a lot of boilerplate code, this library was meant to be made.
 
 The main focus of the library is the simplified approach for declaring routes and arguments. What's more, this library **doesn't force you** to declare your screen composables in any particular way, which was a deal-breaker in other existing safe-args libraries.
 
@@ -18,6 +18,7 @@ interface RouteActions {
 
     fun toMainScreen(): String
     fun toSecondScreen(id: Int): String
+
     ...
 }
 ```
@@ -55,6 +56,8 @@ First of all add **Kotlin Symbol Processing** plugin to the module of your proje
 
 ```
 plugins {
+    ...
+
     id("com.google.devtools.ksp") version "1.5.31-1.0.1"
 }
 ```
@@ -63,6 +66,8 @@ Then add dependencies:
 
 ```
 dependencies {
+    ...
+    
     ksp("dev.olshevski.safeargs:ksp:1.0.0")
     implementation("dev.olshevski.safeargs:api-compose:1.0.0")
 }
@@ -72,7 +77,6 @@ In order for the project to discover a newly generated files add the `build/gene
 
 ```
 android {
-
     ...
 
     applicationVariants.all {
@@ -95,7 +99,7 @@ If you for some reason want to use this library in a non-Compose application or 
 ```
 implementation("dev.olshevski.safeargs:api:1.0.0")
 ```
-instead of `api-compose`. This artifact contains only the essential declarations without any Compose dependencies.
+instead of `api-compose`. The `api` artifact contains only the essential declarations without any Compose dependencies.
 
 ## Nested navigation
 
