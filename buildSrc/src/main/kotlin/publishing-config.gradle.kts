@@ -3,18 +3,10 @@ plugins {
     signing
 }
 
-fun createPublicationName() = name.split("-")
-    .mapIndexed { index, s ->
-        if (index == 0) s else s.capitalize()
-    }
-    .joinToString(separator = "")
-
 afterEvaluate {
     publishing {
-        publications {
-            create<MavenPublication>(createPublicationName()) {
-                from(components.findByName("release") ?: components.findByName("java")!!)
-
+        publications.all {
+            if (this is MavenPublication) {
                 pom {
                     name.set("Compose Safe Args")
                     description.set("Missing safe arguments generator for Android Compose Navigation")

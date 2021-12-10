@@ -24,3 +24,11 @@ dependencies {
         exclude(module = "kotlin-reflect")
     }
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("ksp") {
+            from(components["java"])
+        }
+    }
+}
