@@ -9,7 +9,7 @@ afterEvaluate {
             if (this is MavenPublication) {
                 pom {
                     name.set("Compose Safe Args")
-                    description.set("Missing safe arguments generator for Android Compose Navigation")
+                    description.set("Missing safe arguments generator for Compose Navigation")
                     url.set("https://github.com/olshevski/compose-safe-args")
 
                     licenses {
