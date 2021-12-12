@@ -1,6 +1,6 @@
 # Safe Arguments Generator
 
-Yet another attemp to add safe arguments to [Compose Navigation](https://developer.android.com/jetpack/compose/navigation).
+Yet another attempt to add safe arguments to [Compose Navigation](https://developer.android.com/jetpack/compose/navigation).
 
 ## Why
 
@@ -40,7 +40,7 @@ NavHost(navController, startDestination = Routes.toMainScreen()) {
 }
 ```
 
-And in order to navigate between destinations you just call:
+And in order to navigate between destinations, you just call:
 
 ```kotlin
 navController.navigate(Routes.toSecondScreen(id = 123))
@@ -48,11 +48,11 @@ navController.navigate(Routes.toSecondScreen(id = 123))
 
 As simple as that.
 
-There is a of course a bunch of other useful features that will be explained further. But first...
+There is of course a bunch of other useful features that will be explained further. But first...
 
 ## Add the library to your project
 
-First of all add [Kotlin Symbol Processing](https://github.com/google/ksp) plugin to the module of your project where you are going to declare routes:
+First, add [Kotlin Symbol Processing](https://github.com/google/ksp) plugin to the module of your project where you are going to declare routes:
 
 ```kotlin
 plugins {
@@ -71,7 +71,7 @@ dependencies {
 }
 ```
 
-In order for the project to discover newly generated files add `build/generated/ksp/...` folders to the source sets like this:
+In order for the project to discover newly generated files, add `build/generated/ksp/...` folders to the source sets like this:
 
 ```kotlin
 android {
@@ -91,7 +91,7 @@ And that's it.
 
 ### Alternative dependencies
 
-If you for some reason want to use this library in a non-Compose application or you just want to write you own custom `NavGraphBuilder` extensions you can use:
+If you for some reason want to use this library in a non-Compose application, or you just want to write your own custom `NavGraphBuilder` extensions you can use:
 
 ```kotlin
 implementation("dev.olshevski.safeargs:api:1.0.0")
@@ -102,7 +102,7 @@ instead of `api-compose`. The `api` artifact contains only essential declaration
 
 ### Declaring routes
 
-You must declare routes inside an interface. The name of the interface is arbitrary. As it declares navigation actions a good choise for the name may be `RouteActions` or similar one.
+You must declare routes inside an interface. The name of the interface is arbitrary. As it declares navigation actions, a good choice for the name may be `RouteActions` or similar one.
 
 Inside the interface you declare methods starting with `to` prefix and returning `String`. Names of methods minus `to` prefix will become names of routes. For example, `fun toMainScreen(): String` will be interpreted as `MainScreen` route.
 
@@ -159,13 +159,13 @@ object Second : Route<Second.Args>(
 }
 ```
 
-As you can see a bunch of useful `from` methods are generated and constants for arguments. You may use them as you want. For example, argument constants may be usefull for declaring deep-links.
+As you can see, a bunch of useful `from` methods are generated and constants for arguments. You may use them as you want. For example, argument constants may be useful for declaring deep-links.
 
 **Note:** constructing arguments from `SavedStateHandle` is useful in `ViewModels`. For acquiring arguments from `NavBackStackEntry` use `argsFrom(navBackStackEntry.arguments)`. `navBackStackEntry.savedStateHandle` may simply be `null`.
 
 ### Nested navigation
 
-This library was created with nested navigation in mind. To organize your routes hierarchy you can simply declare more nested interfaces with `@GenerateRoutes` annotation:
+This library was created with nested navigation in mind. To organize your routes hierarchically, you can simply declare more nested interfaces with `@GenerateRoutes` annotation:
 
 ```kotlin
 @GenerateRoutes("Routes")
@@ -184,7 +184,7 @@ interface RouteActions {
 }
 ```
 
-This declaration will simply be treated as another group of routes, which are placed inside `Routes.Subroutes` object. In order for `Routes.Subroutes` to be a route itself you need to add a navigation declaration with the same name:
+This declaration will simply be treated as another group of routes, which are placed inside `Routes.Subroutes` object. In order for `Routes.Subroutes` to be a route itself, you need to add a navigation declaration with the same name:
 
 ```kotlin
 @GenerateRoutes("Routes")
