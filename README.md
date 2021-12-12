@@ -6,7 +6,7 @@ Yet another attemp to add safe arguments to [Compose Navigation](https://develop
 
 Since routes in Navigation Component don't support safe arguments out of the box as well as require a lot of boilerplate code, this library was meant to be made.
 
-The main focus of the library is a simplified approach for declaring routes and arguments. What's more, this library *doesn't force you* to declare your screen composables in any particular way, which was a deal-breaker in several other existing safe-args libraries.
+The main focus of the library is a simplified approach for declaring routes and arguments. What's more, this library *doesn't force you* to declare your screen composables in any particular way, which was a deal-breaker in several other existing safe-args projects.
 
 ## Ok, show me the code
 
@@ -71,7 +71,7 @@ dependencies {
 }
 ```
 
-In order for the project to discover newly generated files add `build/generated/ksp/...` folders to source sets like this:
+In order for the project to discover newly generated files add `build/generated/ksp/...` folders to the source sets like this:
 
 ```kotlin
 android {
@@ -104,48 +104,54 @@ instead of `api-compose`. The `api` artifact contains only essential declaration
 
 You must declare routes inside an interface. The name of the interface is arbitrary. As it declares navigation actions a good choise for the name may be `RouteActions` or similar one.
 
-Inside the interface you declare methods starting with `to` prefix and returning `String`. The names of the methods without `to` prefix will become the names of the routes. For example, `fun toMainScreen(): String` will be interpreted as `MainScreen` route.
+Inside the interface you declare methods starting with `to` prefix and returning `String`. Names of methods minus `to` prefix will become names of routes. For example, `fun toMainScreen(): String` will be interpreted as `MainScreen` route.
 
-Every method may contain parameters of types `Int`, `Long`, `Float`, `Boolean`, `String` or `String?`. This is the limitation of Navigation Component, see [Supported Argument Types](https://developer.android.com/guide/navigation/navigation-pass-data#supported_argument_types).
+Every method may contain parameters of **types** `Int`, `Long`, `Float`, `Boolean`, `String` or `String?`. This is the limitation of Navigation Component, see [Supported Argument Types](https://developer.android.com/guide/navigation/navigation-pass-data#supported_argument_types).
 
-Then you annotate the interface with `@GenerateRoutes` annotation specifying the name of the generated class, e.g. `"Routes"`. This class will inherit the interface and provide implementations for every declared method. Every method will then be able to build a `String` representation of a route with arguments applied. Thus the required `String` return value.
+**Default values** for parameters may be specified as well. 
 
-Note that there is no limitation on the number of `GenerateRoutes`-annotated interfaces. Feel free to group and organize your routes however you want. The only requirement: no duplicate names for generated classes within the same package.
+Then you annotate the interface with `@GenerateRoutes` specifying the name of the generated class, e.g. `"Routes"`. This class will inherit the interface and provide implementations for every declared method. Every method will then be able to build a `String` representation of a route with arguments applied. Thus the required `String` return value.
 
-### What's generated
+For method `toSecondScreen` from the example above, the generated implementation will be:
 
-As it was said above, navigations actions are implemented. Besides that route declarations are constructed. They all inherit the base `Route` class and provide the `pattern` property and the list of `NamedNavArguments` which are both required to declare routes within `NavHost`.
+```kotlin
+override fun toSecondScreen(id: Int): String = "Routes_SecondScreen/$id"
+```
+
+Note that there is no limitation on the number of `GenerateRoutes`-annotated interfaces. Feel free to group and organize your routes however you want. The only requirement: no duplicate names for generated classes within the same namespace.
+
+### What else is generated
+
+The route declarations themselves are constructed. They all inherit the base `Route` class and provide the `pattern` property and the list of `NamedNavArguments` which are both required to declare navigation routes within `NavHost`.
 
 And of course, every generated route with parameters contains `Args` data class.
 
 Let's see what a single declaration of `fun toSecondScreen(id: Int): String` generates:
 
 ```kotlin
-public override fun toSecondScreen(id: Int): String = "Routes_SecondScreen/$id"
-
-public object Second : Route<Second.Args>(
+object Second : Route<Second.Args>(
     "Routes_Second/{id}", listOf(
         navArgument(Args.Id) {
             type = NavType.IntType
         },
     )
 ) {
-    public override fun argsFrom(bundle: Bundle) = Args.from(bundle)
+    override fun argsFrom(bundle: Bundle) = Args.from(bundle)
 
-    public override fun argsFrom(savedStateHandle: SavedStateHandle) =
+    override fun argsFrom(savedStateHandle: SavedStateHandle) =
         Args.from(savedStateHandle)
 
-    public data class Args(
-        public val id: Int
+    data class Args(
+        val id: Int
     ) {
-        public companion object {
-            public const val Id: String = "id"
+        companion object {
+            const val Id: String = "id"
 
-            public fun from(bundle: Bundle) = Args(
+            fun from(bundle: Bundle) = Args(
                 bundle.getInt(Id),
             )
 
-            public fun from(savedStateHandle: SavedStateHandle) = Args(
+            fun from(savedStateHandle: SavedStateHandle) = Args(
                 savedStateHandle[Id]!!,
             )
         }
@@ -155,6 +161,84 @@ public object Second : Route<Second.Args>(
 
 As you can see a bunch of useful `from` methods are generated and constants for arguments. You may use them as you want. For example, argument constants may be usefull for declaring deep-links.
 
+**Note:** constructing arguments from `SavedStateHandle` is useful in `ViewModels`. For acquiring arguments from `NavBackStackEntry` use `argsFrom(navBackStackEntry.arguments)`. `navBackStackEntry.savedStateHandle` may simply be `null`.
+
 ### Nested navigation
 
-*this section is under construction*
+This library was created with nested navigation in mind. To organize your routes hierarchy you can simply declare more nested interfaces with `@GenerateRoutes` annotation:
+
+```kotlin
+@GenerateRoutes("Routes")
+interface RouteActions {
+
+    ...
+
+    @GenerateRoutes("Subroutes")
+    interface SubrouteActions {
+
+        fun toFirstScreen(): String
+        fun toSecondScreen(): String
+
+    }
+    
+}
+```
+
+This declaration will simply be treated as another group of routes, which are placed inside `Routes.Subroutes` object. In order for `Routes.Subroutes` to be a route itself you need to add a navigation declaration with the same name:
+
+```kotlin
+@GenerateRoutes("Routes")
+interface RouteActions {
+
+    ...
+
+    fun toSubroutes(): String
+
+    @GenerateRoutes("Subroutes")
+    interface SubrouteActions {
+
+        fun toFirstScreen(): String
+        fun toSecondScreen(): String
+
+    }
+    
+}
+```
+
+Now `Routes.Subroutes` is both a `Route` and a container for nested routes.
+
+### Extension methods
+
+`api` artifacts adds a single extension method for now:
+
+```kotlin
+fun NavController.getBackStackEntry(route: Route<*>)
+```
+
+`api-compose` artifact adds convenient `NavGraphBuilder` extensions for using generated routes and easy acquiring of `Args` classes:
+
+```kotlin
+NavHost(navController, startDestination = Routes.toMainScreen()) {
+
+    composable(Routes.MainScreen) {
+        // you may get args manually here or in ViewModel
+    }
+    
+    composableWithArgs(Routes.SecondScreen) { args ->
+        // Args are acquired. 
+        // Works well even if route doesn't have any parameters.
+    }
+
+    // same for Dialogs
+    dialog(Routes.SomeDialog) { ... }
+    dialogWithArgs(Routes.AnotherDialog) { args -> ... }
+
+    // nested navigation
+    navigation(Routes.Subroutes) { ... }
+
+}
+```
+
+## Sample
+
+Please explore the `sample` module within the project for better understanding of capabilities of the library.
