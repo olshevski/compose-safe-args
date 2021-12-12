@@ -18,7 +18,7 @@ interface RouteActions {
 
     fun toMainScreen(): String
     fun toSecondScreen(id: Int): String
-    ...
+    // ...
 
 }
 ```
@@ -36,7 +36,7 @@ NavHost(navController, startDestination = Routes.toMainScreen()) {
         // here you can use args.id
     }
 
-    ...
+    // ...
 }
 ```
 
@@ -56,7 +56,7 @@ First, add [Kotlin Symbol Processing](https://github.com/google/ksp) plugin to t
 
 ```kotlin
 plugins {
-    ...
+    // ...
     id("com.google.devtools.ksp") version "1.5.31-1.0.1"
 }
 ```
@@ -65,7 +65,7 @@ Then add dependencies:
 
 ```kotlin
 dependencies {
-    ...
+    // ...
     ksp("dev.olshevski.safeargs:ksp:1.0.0")
     implementation("dev.olshevski.safeargs:api-compose:1.0.0")
 }
@@ -75,7 +75,7 @@ In order for the project to discover newly generated files, add `build/generated
 
 ```kotlin
 android {
-    ...
+    // ...
     applicationVariants.all {
             val variantName = name
             sourceSets {
@@ -171,7 +171,7 @@ This library was created with nested navigation in mind. To organize your routes
 @GenerateRoutes("Routes")
 interface RouteActions {
 
-    ...
+    // ...
 
     @GenerateRoutes("Subroutes")
     interface SubrouteActions {
@@ -190,7 +190,7 @@ This declaration will simply be treated as another group of routes, which are pl
 @GenerateRoutes("Routes")
 interface RouteActions {
 
-    ...
+    // ...
 
     fun toSubroutes(): String
 
@@ -230,11 +230,11 @@ NavHost(navController, startDestination = Routes.toMainScreen()) {
     }
 
     // same for Dialogs
-    dialog(Routes.SomeDialog) { ... }
-    dialogWithArgs(Routes.AnotherDialog) { args -> ... }
+    dialog(Routes.SomeDialog) { /* ... */ }
+    dialogWithArgs(Routes.AnotherDialog) { args -> /* ... */ }
 
     // nested navigation
-    navigation(Routes.Subroutes) { ... }
+    navigation(Routes.Subroutes) { /* ... */ }
 
 }
 ```
