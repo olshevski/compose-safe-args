@@ -18,6 +18,8 @@ class RoutesStructureReader(val logger: KSPLogger) {
             Long::class.qualifiedName,
             Float::class.qualifiedName,
         )
+
+        val WordRegex = Regex("[\\w]+")
     }
 
     fun read(annotatedDeclaration: KSNode): RoutesStructure {
@@ -51,11 +53,15 @@ class RoutesStructureReader(val logger: KSPLogger) {
         val name = annotationArgument?.value as String
 
         check(name.isNotBlank(), annotationArgument) {
-            "The \"${GenerateRoutesName}\" value in ${GenerateRoutes} annotation must not be blank"
+            "The \"${GenerateRoutesName}\" value in $GenerateRoutes annotation must not be blank"
+        }
+        check(name.matches(WordRegex), annotationArgument) {
+            """ The "$GenerateRoutesName" value in $GenerateRoutes annotation must contain only
+                alphanumeric characters and underscore: [A-Za-z0-9_]
+            """.singleLine()
         }
 
         val interfaceType = interfaceDeclaration.asType(emptyList())
-
         check(name != interfaceType.declaration.simpleName.asString(), annotationArgument) {
             """ The "$GenerateRoutesName" value in $GenerateRoutes annotation must not be the same as
                 the name of the annotated interface
@@ -137,6 +143,11 @@ class RoutesStructureReader(val logger: KSPLogger) {
         val functionName = functionDeclaration.simpleName.asString()
         check(functionName.startsWith(ToFunctionPrefix), functionDeclaration) {
             "All functions must start with prefix \"${ToFunctionPrefix}\""
+        }
+        check(functionName.matches(WordRegex), functionDeclaration) {
+            """ All function must be named only with alphanumeric characters and underscore: 
+                [A-Za-z0-9_]
+            """.singleLine()
         }
 
         val returnType = functionDeclaration.returnType?.resolve()
