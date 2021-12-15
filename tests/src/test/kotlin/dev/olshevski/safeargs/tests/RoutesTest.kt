@@ -9,7 +9,7 @@ class RoutesTest : FunSpec({
 
     context("correct routes list") {
         test("Routes") {
-            Routes.routes shouldContainAll listOf(
+            Routes.routes shouldContainAll setOf(
                 Routes.MainScreen,
                 Routes.PrimitiveValuesScreen,
                 Routes.StringValueScreen,
@@ -18,7 +18,7 @@ class RoutesTest : FunSpec({
         }
 
         test("Routes.Subgraph") {
-            Routes.Subgraph.routes shouldContainAll listOf(
+            Routes.Subgraph.routes shouldContainAll setOf(
                 Routes.Subgraph.FirstSubScreen,
                 Routes.Subgraph.SecondSubScreen
             )

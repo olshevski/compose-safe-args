@@ -44,6 +44,7 @@ class RoutesGenerator(
         const val FromMethod = "from"
         const val ArgsFromMethod = "argsFrom"
         const val RoutesProperty = "routes"
+        const val GroupsProperty = "groups"
         const val BundleParameter = "bundle"
         const val SavedStateHandleParameter = "savedStateHandle"
 
@@ -148,6 +149,7 @@ class RoutesGenerator(
                         addType(generateRouteClass(newParents, childNode))
                     }
                     addProperty(generateRoutesProperty(groupNode))
+                    addProperty(generateGroupsProperty(groupNode))
                 }
             }
             .build()
@@ -155,21 +157,42 @@ class RoutesGenerator(
 
     private fun generateRoutesProperty(groupNode: GroupNode) = PropertySpec
         .builder(
-            Names.RoutesProperty, List::class.asTypeName().parameterizedBy(
+            Names.RoutesProperty, Set::class.asTypeName().parameterizedBy(
                 Types.RouteClass.parameterizedBy(STAR)
             )
         )
         .addModifiers(KModifier.OVERRIDE)
         .initializer(buildCodeBlock {
-            if (groupNode.childNodes.isEmpty()) {
-                add("emptyList()")
+            val childRouteNodes = groupNode.childNodes.filter { it !is GroupNode }
+            if (childRouteNodes.isEmpty()) {
+                add("emptySet()")
             } else {
-                addLine("listOf(")
+                addLine("setOf(")
                 withIndent {
-                    groupNode.childNodes.filter { it !is GroupNode }
-                        .forEach { childNode ->
-                            addLine("${childNode.name},")
-                        }
+                    childRouteNodes.forEach { childNode ->
+                        addLine("${childNode.name},")
+                    }
+                }
+                add(")")
+            }
+        })
+        .build()
+
+    private fun generateGroupsProperty(groupNode: GroupNode) = PropertySpec
+        .builder(
+            Names.GroupsProperty, Set::class.asTypeName().parameterizedBy(Types.RouteGroupClass)
+        )
+        .addModifiers(KModifier.OVERRIDE)
+        .initializer(buildCodeBlock {
+            val childGroupNodes = groupNode.childNodes.filter { it !is RouteNode }
+            if (childGroupNodes.isEmpty()) {
+                add("emptySet()")
+            } else {
+                addLine("setOf(")
+                withIndent {
+                    childGroupNodes.forEach { childNode ->
+                        addLine("${childNode.name},")
+                    }
                 }
                 add(")")
             }

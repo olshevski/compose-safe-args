@@ -48,9 +48,17 @@ abstract class Route<ArgsT>(
 interface RouteGroup {
 
     /**
-     * Return the list of all declared routes.
+     * Return the list of all declared routes. Some of the routes may implement
+     * [RouteGroup]. You can check this with `is RouteGroup` or whether a root is contained in
+     * [groups] set.
      */
-    val routes: List<Route<*>>
+    val routes: Set<Route<*>>
+
+    /**
+     * Return the list of all nested groups. Some of the groups may be instances of [Route]. You
+     * can check this with `is Route<*>` or whether a group is contained in [routes] set.
+     */
+    val groups: Set<RouteGroup>
 }
 
 /**
