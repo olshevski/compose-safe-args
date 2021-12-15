@@ -387,7 +387,7 @@ class RoutesGenerator(
     ) = apply {
         parents.forEach {
             append(it.name)
-            append("_")
+            append("-")
         }
         append(routeNode.name)
     }

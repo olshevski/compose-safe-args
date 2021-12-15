@@ -29,12 +29,12 @@ class RoutesTest : FunSpec({
     context("correct generated pattern") {
         withData(
             nameFn = { it.first::class.simpleName.toString() },
-            Routes.MainScreen to "Routes_MainScreen",
-            Routes.PrimitiveValuesScreen to "Routes_PrimitiveValuesScreen/{intValue}/{longValue}/{floatValue}/{booleanValue}",
-            Routes.StringValueScreen to "Routes_StringValueScreen/{stringValue}?nullableStringValue={nullableStringValue}",
-            Routes.Subgraph to "Routes_Subgraph",
-            Routes.Subgraph.FirstSubScreen to "Routes_Subgraph_FirstSubScreen",
-            Routes.Subgraph.SecondSubScreen to "Routes_Subgraph_SecondSubScreen?nullableStringValue={nullableStringValue}",
+            Routes.MainScreen to "Routes-MainScreen",
+            Routes.PrimitiveValuesScreen to "Routes-PrimitiveValuesScreen/{intValue}/{longValue}/{floatValue}/{booleanValue}",
+            Routes.StringValueScreen to "Routes-StringValueScreen/{stringValue}?nullableStringValue={nullableStringValue}",
+            Routes.Subgraph to "Routes-Subgraph",
+            Routes.Subgraph.FirstSubScreen to "Routes-Subgraph-FirstSubScreen",
+            Routes.Subgraph.SecondSubScreen to "Routes-Subgraph-SecondSubScreen?nullableStringValue={nullableStringValue}",
         ) { (route, expectedPattern) ->
             route.pattern shouldBe expectedPattern
         }
