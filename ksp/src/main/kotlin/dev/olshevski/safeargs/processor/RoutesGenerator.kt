@@ -29,9 +29,8 @@ class RoutesGenerator(
     private object Types {
         val RouteClass = ClassName(LibPackage, "Route")
         val RouteGroupClass = ClassName(LibPackage, "RouteGroup")
-        val BuildOptionalArgumentsMethod = MemberName(LibPackage, "buildOptionalArguments")
+        val UriClass = ClassName("android.net", "Uri")
         val NavArgumentMethod = MemberName("androidx.navigation", "navArgument")
-        val NavTypeClass = ClassName("androidx.navigation", "NavType")
         val BundleClass = ClassName("android.os", "Bundle")
         val SavedStateHandleClass = ClassName("androidx.lifecycle", "SavedStateHandle")
     }
@@ -47,35 +46,39 @@ class RoutesGenerator(
         const val GroupsProperty = "groups"
         const val BundleParameter = "bundle"
         const val SavedStateHandleParameter = "savedStateHandle"
-
-        private val ParameterTypeMappings = mapOf(
-            Int::class.qualifiedName to ParameterTypeMapping(
-                navType = "IntType",
-                bundleGetter = "getInt"
-            ),
-            Boolean::class.qualifiedName to ParameterTypeMapping(
-                navType = "BoolType",
-                bundleGetter = "getBoolean"
-            ),
-            Float::class.qualifiedName to ParameterTypeMapping(
-                navType = "FloatType",
-                bundleGetter = "getFloat"
-            ),
-            Long::class.qualifiedName to ParameterTypeMapping(
-                navType = "LongType",
-                bundleGetter = "getLong"
-            ),
-            String::class.qualifiedName to ParameterTypeMapping(
-                navType = "StringType",
-                bundleGetter = "getString",
-                bundleReturnsNullableValue = true
-            ),
-        )
-
-        fun getParameterTypeMapping(type: KSType) =
-            ParameterTypeMappings[type.declaration.qualifiedName?.asString()]
-                ?: error("Unexpected parameter type")
     }
+
+    private val parameterTypeMappings = mapOf(
+        String::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "EncodedStringType"),
+            buildParameterToStringCode = { it }
+        ),
+        Boolean::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "NullableBooleanType"),
+        ),
+        Byte::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "NullableByteType"),
+        ),
+        Short::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "NullableShortType"),
+        ),
+        Int::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "NullableIntType"),
+        ),
+        Long::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "NullableLongType"),
+        ),
+        Float::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "NullableFloatType"),
+        ),
+        Double::class.qualifiedName to ParameterTypeMapping(
+            navType = ClassName(LibPackage, "NullableDoubleType"),
+        ),
+    )
+
+    private fun getParameterTypeMapping(type: KSType) =
+        parameterTypeMappings[type.declaration.qualifiedName?.asString()]
+            ?: error("Unexpected parameter type")
 
     fun generateRoutesFile(routesStructure: RoutesStructure) {
         val fileSpec = FileSpec
@@ -218,9 +221,8 @@ class RoutesGenerator(
     private fun generateRoutePattern(
         parents: List<GroupNode>,
         routeNode: RouteNode
-    ) = StringBuilder().apply {
+    ) = StringBuilder(buildUniqueRouteName(parents, routeNode)).apply {
         val (requiredParameters, optionalParameters) = routeNode.partitionParameters()
-        appendUniqueRouteName(parents, routeNode)
         requiredParameters.forEach { parameter ->
             append("/{")
             append(parameter.name)
@@ -248,12 +250,12 @@ class RoutesGenerator(
             withIndent {
                 parameters.forEach { parameter ->
                     addLine(
-                        "%M(${Names.ArgsClass}.${parameter.capitalizedName}) {",
+                        "%M(${Names.ArgsClass}.${parameter.capitalizedName})·{",
                         Types.NavArgumentMethod
                     )
                     withIndent {
-                        val navType = Names.getParameterTypeMapping(parameter.type).navType
-                        addLine("type = %T.${navType}", Types.NavTypeClass)
+                        val navType = getParameterTypeMapping(parameter.type).navType
+                        addLine("type = %T", navType)
                         if (parameter.type.isMarkedNullable) {
                             addLine("nullable = true")
                         }
@@ -311,9 +313,12 @@ class RoutesGenerator(
                     addLine("return ${Names.ArgsClass}(")
                     withIndent {
                         parameters.forEach { parameter ->
-                            val mapping = Names.getParameterTypeMapping(parameter.type)
-                            add("${Names.BundleParameter}.${mapping.bundleGetter}(${parameter.capitalizedName})")
-                            if (mapping.bundleReturnsNullableValue && !parameter.type.isMarkedNullable) {
+                            val mapping = getParameterTypeMapping(parameter.type)
+                            add(
+                                "%T.get(${Names.BundleParameter}, ${parameter.capitalizedName})",
+                                mapping.navType
+                            )
+                            if (!parameter.type.isMarkedNullable) {
                                 add("!!")
                             }
                             addLine(",")
@@ -359,43 +364,47 @@ class RoutesGenerator(
         .returns(routeNode.returnType.toTypeName())
         .addModifiers(KModifier.OVERRIDE)
         .addCode(buildCodeBlock {
-            val (requiredParameters, optionalParameters) = routeNode.partitionParameters()
-            val routeWithRequiredArguments = StringBuilder().apply {
-                appendUniqueRouteName(parents, routeNode)
-                requiredParameters.forEach { parameter ->
-                    append("/$")
-                    append(parameter.name)
-                }
-
-            }.toString()
-            add("return \"$routeWithRequiredArguments\"")
-            if (optionalParameters.isNotEmpty()) {
-                addLine(" + %M(", Types.BuildOptionalArgumentsMethod)
+            val uniqueRouteName = buildUniqueRouteName(parents, routeNode)
+            add("return ")
+            if (routeNode.parameters.isEmpty()) {
+                add("%S", uniqueRouteName)
+            } else {
+                addLine("%T.Builder().apply·{", Types.UriClass)
                 withIndent {
-                    optionalParameters.forEach { parameter ->
-                        addLine("${routeNode.name}.${Names.ArgsClass}.${parameter.capitalizedName} to ${parameter.name},")
+                    addLine("path(%S)", uniqueRouteName)
+                    routeNode.parameters.forEach { parameter ->
+                        val parameterToStringCode = getParameterTypeMapping(parameter.type)
+                            .buildParameterToStringCode(parameter.name)
+                        if (parameter.type.isMarkedNullable) {
+                            addLine("if·(${parameter.name} != null)·{")
+                            withIndent {
+                                addLine("appendQueryParameter(${routeNode.name}.${Names.ArgsClass}.${parameter.capitalizedName}, $parameterToStringCode)")
+                            }
+                            addLine("}")
+                        } else {
+                            addLine("appendPath($parameterToStringCode)")
+                        }
                     }
                 }
-                add(")")
+                add("}.toString()")
             }
         })
         .build()
 
-    private fun StringBuilder.appendUniqueRouteName(
+    private fun buildUniqueRouteName(
         parents: List<GroupNode>,
         routeNode: RouteNode
-    ) = apply {
+    ) = StringBuilder().apply {
         parents.forEach {
             append(it.name)
             append("-")
         }
         append(routeNode.name)
-    }
+    }.toString()
 
     private class ParameterTypeMapping(
-        val navType: String,
-        val bundleGetter: String,
-        val bundleReturnsNullableValue: Boolean = false
+        val navType: ClassName,
+        val buildParameterToStringCode: (String) -> String = { "$it.toString()" }
     )
 
 }

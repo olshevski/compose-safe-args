@@ -15,97 +15,128 @@ class RoutesNavigationTest {
     @Test
     fun mainScreenDisplayed() {
         composeTestRule
-            .onNodeWithText(MainScreen)
+            .onNodeWithText(MainScreenTitle)
             .assertIsDisplayed()
     }
 
     @Test
-    fun primitiveValuesScreenArgsPassed() {
+    fun singleIdScreenArgsPassed() {
         composeTestRule
-            .onNodeWithText("To $PrimitiveValuesScreen")
+            .onNodeWithText(SingleIdScreenTitle.withToPrefix())
             .performClick()
 
         composeTestRule
-            .onNodeWithText(PrimitiveValuesScreen)
+            .onNodeWithText(SingleIdScreenTitle)
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("Args(intValue=1234567890, longValue=123456789010, floatValue=12345.679, booleanValue=true)")
+            .onNodeWithText("Args(id=123456789010)")
             .assertIsDisplayed()
     }
 
     @Test
-    fun primitiveDefaultValuesScreenArgsPassed() {
+    fun nullableIdsScreenArgsPassed() {
         composeTestRule
-            .onNodeWithText("To $PrimitiveDefaultValuesScreen")
+            .onNodeWithText(NullableIdsScreenTitle.withToPrefix())
             .performClick()
 
         composeTestRule
-            .onNodeWithText(PrimitiveDefaultValuesScreen)
+            .onNodeWithText(NullableIdsScreenTitle)
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("Args(intValue=1234567890, longValue=123456789010, floatValue=12345.679, booleanValue=true)")
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun stringValueScreenArgsPassed() {
-        composeTestRule
-            .onNodeWithText("To $StringValueScreen")
-            .performClick()
-
-        composeTestRule
-            .onNodeWithText(StringValueScreen)
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithText("Args(stringValue=Hello, routes!, nullableStringValue=null, anotherNullableStringValue=Hello to you too!)")
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun stringDefaultValueScreenArgsPassed() {
-        composeTestRule
-            .onNodeWithText("To $StringDefaultValueScreen")
-            .performClick()
-
-        composeTestRule
-            .onNodeWithText(StringDefaultValueScreen)
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithText("Args(stringValue=Hello, routes!, nullableStringValue=null, anotherNullableStringValue=Hello to you too!)")
+            .onNodeWithText("Args(id1=123456789010, id2=null)")
             .assertIsDisplayed()
     }
 
     @Test
     fun subgraphOpened() {
         composeTestRule
-            .onNodeWithText("To $Subgraph")
+            .onNodeWithText(SubgraphTitle.withToPrefix())
             .performClick()
 
         composeTestRule
-            .onNodeWithText(FirstSubScreen)
+            .onNodeWithText(FirstSubScreenTitle)
             .assertIsDisplayed()
     }
 
     @Test
     fun subSecondScreenArgsPassed() {
         composeTestRule
-            .onNodeWithText("To $Subgraph")
+            .onNodeWithText(SubgraphTitle.withToPrefix())
             .performClick()
 
         composeTestRule
-            .onNodeWithText("To $SecondSubScreen")
+            .onNodeWithText(SecondSubScreenTitle.withToPrefix())
             .performClick()
 
         composeTestRule
-            .onNodeWithText(SecondSubScreen)
+            .onNodeWithText(SecondSubScreenTitle)
             .assertIsDisplayed()
 
         composeTestRule
             .onNodeWithText("Args(nullableStringValue=Hello, routes!)")
             .assertIsDisplayed()
     }
+
+    @Test
+    fun allSupportedValuesScreenTitleArgsPassed() {
+        composeTestRule
+            .onNodeWithText(AllSupportedValuesScreenTitle.withToPrefix())
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText(AllSupportedValuesScreenTitle)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText("Args(stringValue=Hello, routes!, booleanValue=true, byteValue=123, shortValue=12345, intValue=1234567890, longValue=123456789010, floatValue=12345.679, doubleValue=12345.67891)")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun allNullableValuesScreenTitleArgsPassed() {
+        composeTestRule
+            .onNodeWithText(AllNullableValuesScreenTitle.withToPrefix())
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText(AllNullableValuesScreenTitle)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText("Args(stringValue=Hello, routes!, booleanValue=true, byteValue=123, shortValue=12345, intValue=1234567890, longValue=123456789010, floatValue=12345.679, doubleValue=12345.67891)")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun allNullValuesScreenTitleArgsPassed() {
+        composeTestRule
+            .onNodeWithText(AllNullValuesScreenTitle.withToPrefix())
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText(AllNullValuesScreenTitle)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText("Args(stringValue=null, booleanValue=null, byteValue=null, shortValue=null, intValue=null, longValue=null, floatValue=null, doubleValue=null)")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun encodedCharactersScreenTitleArgsPassed() {
+        composeTestRule
+            .onNodeWithText(EncodedCharactersScreenTitle.withToPrefix())
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText(EncodedCharactersScreenTitle)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText("Args(encodedCharactersString=path1/part1?value1=arg1, nullableEncodedCharactersString=path2/part2?value2=arg2)")
+            .assertIsDisplayed()
+    }
+
 }

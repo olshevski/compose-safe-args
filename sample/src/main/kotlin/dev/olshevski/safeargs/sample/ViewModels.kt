@@ -12,55 +12,78 @@ import androidx.lifecycle.ViewModel
 
 private const val TAG = "ViewModels"
 
-class PrimitiveValuesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class SingleIdViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val args = Routes.PrimitiveValuesScreen.argsFrom(savedStateHandle)
+    private val args = Routes.SingleIdScreen.argsFrom(savedStateHandle)
 
     init {
-        check(args.intValue == SampleValues.IntValue)
-        check(args.longValue == SampleValues.LongValue)
-        check(args.floatValue == SampleValues.FloatValue)
-        check(args.booleanValue == SampleValues.BooleanValue)
+        check(args.id == SampleValues.LongValue)
         Log.v(TAG, args.toString())
     }
 
 }
 
-class PrimitiveDefaultValuesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class NullableIdsViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val args = Routes.PrimitiveDefaultValuesScreen.argsFrom(savedStateHandle)
+    private val args = Routes.NullableIdsScreen.argsFrom(savedStateHandle)
 
     init {
-        check(args.intValue == SampleValues.IntValue)
-        check(args.longValue == SampleValues.LongValue)
-        check(args.floatValue == SampleValues.FloatValue)
-        check(args.booleanValue == SampleValues.BooleanValue)
+        check(args.id1 == SampleValues.LongValue)
+        check(args.id2 == null)
         Log.v(TAG, args.toString())
     }
 
 }
 
-class StringValueViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class AllSupportedTypesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val args = Routes.StringValueScreen.argsFrom(savedStateHandle)
+    private val args = Routes.AllSupportedValuesScreen.argsFrom(savedStateHandle)
 
     init {
         check(args.stringValue == SampleValues.StringValue)
-        check(args.nullableStringValue == null)
-        check(args.anotherNullableStringValue == SampleValues.AnotherStringValue)
+        check(args.booleanValue == SampleValues.BooleanValue)
+        check(args.byteValue == SampleValues.ByteValue)
+        check(args.shortValue == SampleValues.ShortValue)
+        check(args.intValue == SampleValues.IntValue)
+        check(args.longValue == SampleValues.LongValue)
+        check(args.floatValue == SampleValues.FloatValue)
+        check(args.doubleValue == SampleValues.DoubleValue)
         Log.v(TAG, args.toString())
     }
 
 }
 
-class StringDefaultValueViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class AllNullableTypesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val args = Routes.StringDefaultValueScreen.argsFrom(savedStateHandle)
+    private val args = Routes.AllNullableValuesScreen.argsFrom(savedStateHandle)
 
     init {
         check(args.stringValue == SampleValues.StringValue)
-        check(args.nullableStringValue == null)
-        check(args.anotherNullableStringValue == SampleValues.AnotherStringValue)
+        check(args.booleanValue == SampleValues.BooleanValue)
+        check(args.byteValue == SampleValues.ByteValue)
+        check(args.shortValue == SampleValues.ShortValue)
+        check(args.intValue == SampleValues.IntValue)
+        check(args.longValue == SampleValues.LongValue)
+        check(args.floatValue == SampleValues.FloatValue)
+        check(args.doubleValue == SampleValues.DoubleValue)
+        Log.v(TAG, args.toString())
+    }
+
+}
+
+class AllNullTypesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+
+    private val args = Routes.AllNullValuesScreen.argsFrom(savedStateHandle)
+
+    init {
+        check(args.stringValue == null)
+        check(args.booleanValue == null)
+        check(args.byteValue == null)
+        check(args.shortValue == null)
+        check(args.intValue == null)
+        check(args.longValue == null)
+        check(args.floatValue == null)
+        check(args.doubleValue == null)
         Log.v(TAG, args.toString())
     }
 

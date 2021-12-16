@@ -60,26 +60,3 @@ interface RouteGroup {
      */
     val groups: Set<RouteGroup>
 }
-
-/**
- * Build optional arguments part of a route. This method is used internally in generated classes.
- */
-fun buildOptionalArguments(vararg namedArguments: Pair<String, Any?>): String {
-    val nonNullNamedArguments = namedArguments.mapNotNull { namedArgument ->
-        namedArgument.second?.let { namedArgument.first to it }
-    }
-    return if (nonNullNamedArguments.isEmpty()) {
-        ""
-    } else {
-        StringBuilder("?").apply {
-            nonNullNamedArguments.forEachIndexed { index, namedArgument ->
-                if (index > 0) {
-                    append('&')
-                }
-                append(namedArgument.first)
-                append('=')
-                append(namedArgument.second.toString())
-            }
-        }.toString()
-    }
-}

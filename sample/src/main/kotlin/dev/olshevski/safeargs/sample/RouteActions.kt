@@ -17,31 +17,9 @@ interface RouteActions {
      */
     fun toMainScreen(): String
 
-    fun toPrimitiveValuesScreen(
-        intValue: Int,
-        longValue: Long,
-        floatValue: Float,
-        booleanValue: Boolean
-    ): String
+    fun toSingleIdScreen(id: Long): String
 
-    fun toPrimitiveDefaultValuesScreen(
-        intValue: Int = SampleValues.IntValue,
-        longValue: Long = SampleValues.LongValue,
-        floatValue: Float = SampleValues.FloatValue,
-        booleanValue: Boolean = SampleValues.BooleanValue
-    ): String
-
-    fun toStringValueScreen(
-        stringValue: String,
-        nullableStringValue: String?,
-        anotherNullableStringValue: String?
-    ): String
-
-    fun toStringDefaultValueScreen(
-        stringValue: String = SampleValues.StringValue,
-        nullableStringValue: String? = null,
-        anotherNullableStringValue: String? = SampleValues.AnotherStringValue
-    ): String
+    fun toNullableIdsScreen(id1: Long?, id2: Long?): String
 
     fun toSubgraph(): String
 
@@ -53,5 +31,43 @@ interface RouteActions {
         fun toSecondSubScreen(nullableStringValue: String?): String
 
     }
+
+    fun toAllSupportedValuesScreen(
+        stringValue: String,
+        booleanValue: Boolean,
+        byteValue: Byte,
+        shortValue: Short,
+        intValue: Int,
+        longValue: Long,
+        floatValue: Float,
+        doubleValue: Double
+    ): String
+
+    fun toAllNullableValuesScreen(
+        stringValue: String?,
+        booleanValue: Boolean?,
+        byteValue: Byte?,
+        shortValue: Short?,
+        intValue: Int?,
+        longValue: Long?,
+        floatValue: Float?,
+        doubleValue: Double?
+    ): String
+
+    fun toAllNullValuesScreen(
+        stringValue: String?,
+        booleanValue: Boolean?,
+        byteValue: Byte?,
+        shortValue: Short?,
+        intValue: Int?,
+        longValue: Long?,
+        floatValue: Float?,
+        doubleValue: Double?
+    ): String
+
+    fun toEncodedCharactersScreen(
+        encodedCharactersString: String,
+        nullableEncodedCharactersString: String?
+    ): String
 
 }

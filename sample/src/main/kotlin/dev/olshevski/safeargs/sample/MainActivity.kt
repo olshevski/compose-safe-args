@@ -1,6 +1,7 @@
 package dev.olshevski.safeargs.sample
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -44,130 +45,204 @@ fun MainNavHost() {
     NavHost(navController = navController, startDestination = Routes.toMainScreen()) {
 
         composable(Routes.MainScreen) {
-            ScreenWithTitle(title = MainScreen) {
+            ScreenWithTitle(title = MainScreenTitle) {
                 Column(
                     Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Button(onClick = {
-                        navController.navigate(
-                            Routes.toPrimitiveValuesScreen(
-                                intValue = SampleValues.IntValue,
-                                longValue = SampleValues.LongValue,
-                                floatValue = SampleValues.FloatValue,
-                                booleanValue = SampleValues.BooleanValue
-                            )
-                        )
+                        navController.navigate(Routes.toSingleIdScreen(id = SampleValues.LongValue))
                     }) {
-                        Text("To $PrimitiveValuesScreen")
-                    }
-
-                    Button(onClick = {
-                        navController.navigate(Routes.toPrimitiveDefaultValuesScreen())
-                    }) {
-                        Text("To $PrimitiveDefaultValuesScreen")
+                        Text(SingleIdScreenTitle.withToPrefix())
                     }
 
                     Button(onClick = {
                         navController.navigate(
-                            Routes.toStringValueScreen(
-                                stringValue = SampleValues.StringValue,
-                                nullableStringValue = null,
-                                anotherNullableStringValue = SampleValues.AnotherStringValue
+                            Routes.toNullableIdsScreen(
+                                id1 = SampleValues.LongValue,
+                                id2 = null
                             )
                         )
                     }) {
-                        Text("To $StringValueScreen")
-                    }
-
-                    Button(onClick = {
-                        navController.navigate(Routes.toStringDefaultValueScreen())
-                    }) {
-                        Text("To $StringDefaultValueScreen")
+                        Text(NullableIdsScreenTitle.withToPrefix())
                     }
 
                     Button(onClick = {
                         navController.navigate(Routes.toSubgraph())
                     }) {
-                        Text("To $Subgraph")
+                        Text(SubgraphTitle.withToPrefix())
                     }
+
+                    Button(onClick = {
+                        navController.navigate(
+                            Routes.toAllSupportedValuesScreen(
+                                stringValue = SampleValues.StringValue,
+                                booleanValue = SampleValues.BooleanValue,
+                                byteValue = SampleValues.ByteValue,
+                                shortValue = SampleValues.ShortValue,
+                                intValue = SampleValues.IntValue,
+                                longValue = SampleValues.LongValue,
+                                floatValue = SampleValues.FloatValue,
+                                doubleValue = SampleValues.DoubleValue
+                            )
+                        )
+                    }) {
+                        Text(AllSupportedValuesScreenTitle.withToPrefix())
+                    }
+
+                    Button(onClick = {
+                        navController.navigate(
+                            Routes.toAllNullableValuesScreen(
+                                stringValue = SampleValues.StringValue,
+                                booleanValue = SampleValues.BooleanValue,
+                                byteValue = SampleValues.ByteValue,
+                                shortValue = SampleValues.ShortValue,
+                                intValue = SampleValues.IntValue,
+                                longValue = SampleValues.LongValue,
+                                floatValue = SampleValues.FloatValue,
+                                doubleValue = SampleValues.DoubleValue
+                            )
+                        )
+                    }) {
+                        Text(AllNullableValuesScreenTitle.withToPrefix())
+                    }
+
+                    Button(onClick = {
+                        navController.navigate(
+                            Routes.toAllNullValuesScreen(
+                                stringValue = null,
+                                booleanValue = null,
+                                byteValue = null,
+                                shortValue = null,
+                                intValue = null,
+                                longValue = null,
+                                floatValue = null,
+                                doubleValue = null
+                            )
+                        )
+                    }) {
+                        Text(AllNullValuesScreenTitle.withToPrefix())
+                    }
+
+                    Button(onClick = {
+                        navController.navigate(
+                            Routes.toEncodedCharactersScreen(
+                                encodedCharactersString = SampleValues.EncodedCharactersString,
+                                nullableEncodedCharactersString = SampleValues.AnotherEncodedCharactersString
+                            )
+                        )
+                    }) {
+                        Text(EncodedCharactersScreenTitle.withToPrefix())
+                    }
+
                 }
             }
         }
 
-        composableWithArgs(Routes.PrimitiveValuesScreen) { args ->
-            ScreenWithTitle(title = PrimitiveValuesScreen) {
-                check(args.intValue == SampleValues.IntValue)
-                check(args.longValue == SampleValues.LongValue)
-                check(args.floatValue == SampleValues.FloatValue)
-                check(args.booleanValue == SampleValues.BooleanValue)
+        composableWithArgs(Routes.SingleIdScreen) { args ->
+            ScreenWithTitle(title = SingleIdScreenTitle) {
+                check(args.id == SampleValues.LongValue)
                 Text(text = args.toString())
 
                 /*
                  * Explore ViewModels.kt for the simplest way to get arguments in ViewModels. Here
                  * I request ViewModel simply just to instantiate it.
                  */
-                viewModel<PrimitiveValuesViewModel>()
+                viewModel<SingleIdViewModel>()
             }
         }
 
-        composableWithArgs(Routes.PrimitiveDefaultValuesScreen) { args ->
-            ScreenWithTitle(title = PrimitiveDefaultValuesScreen) {
-                check(args.intValue == SampleValues.IntValue)
-                check(args.longValue == SampleValues.LongValue)
-                check(args.floatValue == SampleValues.FloatValue)
-                check(args.booleanValue == SampleValues.BooleanValue)
+        composableWithArgs(Routes.NullableIdsScreen) { args ->
+            ScreenWithTitle(title = NullableIdsScreenTitle) {
+                check(args.id1 == SampleValues.LongValue)
+                check(args.id2 == null)
                 Text(text = args.toString())
 
-                viewModel<PrimitiveDefaultValuesViewModel>()
-            }
-        }
-
-        composableWithArgs(Routes.StringValueScreen) { args ->
-            ScreenWithTitle(title = StringValueScreen) {
-                check(args.stringValue == SampleValues.StringValue)
-                check(args.nullableStringValue == null)
-                check(args.anotherNullableStringValue == SampleValues.AnotherStringValue)
-                Text(text = args.toString())
-
-                viewModel<StringValueViewModel>()
-            }
-        }
-
-        composableWithArgs(Routes.StringDefaultValueScreen) { args ->
-            ScreenWithTitle(title = StringDefaultValueScreen) {
-                check(args.stringValue == SampleValues.StringValue)
-                check(args.nullableStringValue == null)
-                check(args.anotherNullableStringValue == SampleValues.AnotherStringValue)
-                Text(text = args.toString())
-
-                viewModel<StringDefaultValueViewModel>()
+                viewModel<NullableIdsViewModel>()
             }
         }
 
         navigation(route = Routes.Subgraph, startDestination = Routes.Subgraph.toFirstSubScreen()) {
 
             composable(Routes.Subgraph.FirstSubScreen) {
-                ScreenWithTitle(title = FirstSubScreen) {
+                ScreenWithTitle(title = FirstSubScreenTitle) {
                     Button(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                         onClick = {
                             navController.navigate(Routes.Subgraph.toSecondSubScreen(SampleValues.StringValue))
                         }
                     ) {
-                        Text("To $SecondSubScreen")
+                        Text(SecondSubScreenTitle.withToPrefix())
                     }
                 }
             }
 
             composableWithArgs(Routes.Subgraph.SecondSubScreen) { args ->
-                ScreenWithTitle(title = SecondSubScreen) {
+                ScreenWithTitle(title = SecondSubScreenTitle) {
                     Text(text = args.toString())
                 }
             }
 
         }
+
+        composableWithArgs(Routes.AllSupportedValuesScreen) { args ->
+            ScreenWithTitle(title = AllSupportedValuesScreenTitle) {
+                check(args.stringValue == SampleValues.StringValue)
+                check(args.booleanValue == SampleValues.BooleanValue)
+                check(args.byteValue == SampleValues.ByteValue)
+                check(args.shortValue == SampleValues.ShortValue)
+                check(args.intValue == SampleValues.IntValue)
+                check(args.longValue == SampleValues.LongValue)
+                check(args.floatValue == SampleValues.FloatValue)
+                check(args.doubleValue == SampleValues.DoubleValue)
+                Text(text = args.toString())
+
+                viewModel<AllSupportedTypesViewModel>()
+            }
+        }
+
+        composableWithArgs(Routes.AllNullableValuesScreen) { args ->
+            ScreenWithTitle(title = AllNullableValuesScreenTitle) {
+                check(args.stringValue == SampleValues.StringValue)
+                check(args.booleanValue == SampleValues.BooleanValue)
+                check(args.byteValue == SampleValues.ByteValue)
+                check(args.shortValue == SampleValues.ShortValue)
+                check(args.intValue == SampleValues.IntValue)
+                check(args.longValue == SampleValues.LongValue)
+                check(args.floatValue == SampleValues.FloatValue)
+                check(args.doubleValue == SampleValues.DoubleValue)
+                Text(text = args.toString())
+
+                viewModel<AllNullableTypesViewModel>()
+            }
+        }
+
+        composableWithArgs(Routes.AllNullValuesScreen) { args ->
+            ScreenWithTitle(title = AllNullValuesScreenTitle) {
+                check(args.stringValue == null)
+                check(args.booleanValue == null)
+                check(args.byteValue == null)
+                check(args.shortValue == null)
+                check(args.intValue == null)
+                check(args.longValue == null)
+                check(args.floatValue == null)
+                check(args.doubleValue == null)
+                Text(text = args.toString())
+
+                viewModel<AllNullTypesViewModel>()
+            }
+        }
+
+        composableWithArgs(Routes.EncodedCharactersScreen) { args ->
+            ScreenWithTitle(title = EncodedCharactersScreenTitle) {
+                check(args.encodedCharactersString == SampleValues.EncodedCharactersString)
+                check(args.nullableEncodedCharactersString == SampleValues.AnotherEncodedCharactersString)
+                Text(text = args.toString())
+                Log.v("ERASEME", args.toString())
+            }
+        }
+
     }
 }
 

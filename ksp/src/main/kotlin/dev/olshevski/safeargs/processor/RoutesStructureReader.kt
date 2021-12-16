@@ -14,9 +14,12 @@ class RoutesStructureReader(val logger: KSPLogger) {
         val AllowedParameterTypes = listOf(
             String::class.qualifiedName,
             Boolean::class.qualifiedName,
+            Byte::class.qualifiedName,
+            Short::class.qualifiedName,
             Int::class.qualifiedName,
             Long::class.qualifiedName,
             Float::class.qualifiedName,
+            Double::class.qualifiedName,
         )
 
         val WordRegex = Regex("[\\w]+")
@@ -165,16 +168,11 @@ class RoutesStructureReader(val logger: KSPLogger) {
             val qualifiedName = type.declaration.qualifiedName?.asString()
 
             check(qualifiedName in AllowedParameterTypes && !parameter.isVararg, parameter.type) {
-                """ Parameter type can only be Int, Long, Boolean, Float, String.
-                    String may be nullable. No vararg.
+                """ Parameter type can only be Boolean, Byte, Short, Int, Long, Float, Double or
+                    String. They all may be nullable. No vararg.
                 """.singleLine()
             }
-            if (type.isMarkedNullable) {
-                check(qualifiedName == String::class.qualifiedName, parameter.type) {
-                    "Only String parameter type is allowed to be nullable"
-                }
-            }
-
+            
             RouteNode.Parameter(
                 parameter.name?.asString() ?: error("Cannot get parameter name", parameter),
                 type
