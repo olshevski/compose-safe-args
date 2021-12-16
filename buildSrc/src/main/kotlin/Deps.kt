@@ -36,13 +36,13 @@ object Deps {
     }
 
     object Navigation {
-        private const val Version = "2.4.0-beta02"
+        private const val Version = "2.4.0-rc01"
         const val Runtime = "androidx.navigation:navigation-runtime:$Version"
         const val Compose = "androidx.navigation:navigation-compose:$Version"
     }
 
     object Kotest {
-        private const val Version = "5.0.1"
+        private const val Version = "5.0.2"
         const val RunnerJunit5 = "io.kotest:kotest-runner-junit5:$Version"
         const val FrameworkDataset = "io.kotest:kotest-framework-datatest:$Version"
     }
