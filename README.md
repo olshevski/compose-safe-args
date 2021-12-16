@@ -95,7 +95,7 @@ instead of `api-compose`. The `api` artifact contains only essential declaration
 
 You must declare routes inside an interface. The name of the interface is arbitrary. As it declares navigation actions, a good choice for the name may be `RouteActions` or similar one.
 
-Inside the interface you declare methods starting with `to` prefix and returning `String`. Names of methods minus `to` prefix will become names of routes. For example, `fun toMainScreen(): String` will be interpreted as `MainScreen` route.
+Inside the interface you declare methods starting with `to` prefix and returning `String`. The names of methods minus `to` prefix will become the names of routes. For example, `fun toMainScreen(): String` will be interpreted as `MainScreen` route.
 
 Every method may contain parameters of **supported types** `Boolean`, `Byte`, `Short`, `Int`, `Long`, `Float`, `Double` or `String`. They all *may be nullable*.
 
@@ -107,9 +107,9 @@ Note that there is no limitation on the number of `GenerateRoutes`-annotated int
 
 ### Important notices on String type
 
-- URL-encoding of special characters such as `/`, `?`, `=` and various other symbols is handled in this library by default. Unfortunately it is very easy to forget about this case when using raw Navigation Component, but you may forget about these unexpected issues with special characters when using this library.
+- URL-encoding of special characters such as `/`, `?`, `=` and various other symbols is handled in this library by default. Unfortunately, it is very easy to forget about this case when using raw Navigation Component, but you may forget about these unexpected issues with special characters when using this library.
 
-- But unfortunately you have to handle **empty strings** by yourself. Because routes are strings, empty-string arguments lead to missing URL pieces, e.g. `route//arg1=`. And this is handled poorly in Navigation Component. What I can suggest is using nullable `String` instead and handling empty strings as `null`. Or adding some additional decoration to all your strings like wrapping them in quotation marks. But it's all up to you because these values may come from your deep-links and I don't want to mess up this.
+- But unfortunately, you have to handle **empty strings** by yourself. Because routes are strings, empty-string arguments lead to missing URL pieces, e.g. `route//arg1=`. And this is handled poorly in Navigation Component. What I can suggest is using nullable `String` instead and handling empty strings as `null`. Or adding some additional decoration to all your strings, like wrapping them in quotation marks. But it's all up to you because these values may come from your deep-links and I don't want to mess up this.
 
 ### What else is generated
 
@@ -236,6 +236,6 @@ Please explore the `sample` module within the project for better understanding o
 
 ## What's next
 
-Unfortunately, Navigation for Compose is very dissapointing. This library is just a great example of how complicated and weird the idea of *routes* is. There are definitely ways to implement navigation much simpler.
+Unfortunately, Navigation for Compose is very disappointing. This library is just a great example of how complicated and weird the idea of *routes* is. There are definitely ways to implement navigation much simpler.
 
-For now I will provide reasonable support for this library as long as I feel it is helping someone.
+For now, I will provide reasonable support for this library as long as I feel it is helping someone.
