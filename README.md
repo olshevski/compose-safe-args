@@ -52,28 +52,14 @@ There is of course a bunch of other useful features that will be explained furth
 
 ## Add the library to your project
 
-First, add [Kotlin Symbol Processing](https://github.com/google/ksp) plugin to the module of your project where you are going to declare routes:
+The library uses [Kotlin Symbol Processing](https://github.com/google/ksp) for annotation processing. Here is what you need to add the module of your project where you are going to declare routes:
 
 ```kotlin
 plugins {
     // ...
     id("com.google.devtools.ksp") version "1.5.31-1.0.1"
 }
-```
 
-Then add dependencies:
-
-```kotlin
-dependencies {
-    // ...
-    ksp("dev.olshevski.safeargs:ksp:1.0.0")
-    implementation("dev.olshevski.safeargs:api-compose:1.0.0")
-}
-```
-
-In order for the project to discover newly generated files, add `build/generated/ksp/...` folders to the source sets like this:
-
-```kotlin
 android {
     // ...
     applicationVariants.all {
@@ -86,15 +72,20 @@ android {
         }
     }
 }
+
+dependencies {
+    // ...
+    ksp("dev.olshevski.safeargs:ksp:1.1.0")
+    implementation("dev.olshevski.safeargs:api-compose:1.1.0")
+}
 ```
-And that's it.
 
 ### Alternative dependencies
 
 If you for some reason want to use this library in a non-Compose application, or you just want to write your own custom `NavGraphBuilder` extensions you can use:
 
 ```kotlin
-implementation("dev.olshevski.safeargs:api:1.0.0")
+implementation("dev.olshevski.safeargs:api:1.1.0")
 ```
 instead of `api-compose`. The `api` artifact contains only essential declarations without any Compose dependencies.
 
@@ -106,19 +97,19 @@ You must declare routes inside an interface. The name of the interface is arbitr
 
 Inside the interface you declare methods starting with `to` prefix and returning `String`. Names of methods minus `to` prefix will become names of routes. For example, `fun toMainScreen(): String` will be interpreted as `MainScreen` route.
 
-Every method may contain parameters of **types** `Int`, `Long`, `Float`, `Boolean`, `String` or `String?`. This is the limitation of Navigation Component, see [Supported Argument Types](https://developer.android.com/guide/navigation/navigation-pass-data#supported_argument_types).
+Every method may contain parameters of **supported types** `Boolean`, `Byte`, `Short`, `Int`, `Long`, `Float`, `Double` or `String`. They all *may be nullable*.
 
 **Default values** for parameters may be specified as well. 
 
 Then you annotate the interface with `@GenerateRoutes` specifying the name of the generated class, e.g. `"Routes"`. This class will inherit the interface and provide implementations for every declared method. Every method will then be able to build a `String` representation of a route with arguments applied. Thus the required `String` return value.
 
-For method `toSecondScreen` from the example above, the generated implementation will be:
-
-```kotlin
-override fun toSecondScreen(id: Int): String = "Routes_SecondScreen/$id"
-```
-
 Note that there is no limitation on the number of `GenerateRoutes`-annotated interfaces. Feel free to group and organize your routes however you want. The only requirement: no duplicate names for generated classes within the same namespace.
+
+### Important notices on String type
+
+- URL-encoding of special characters such as `/`, `?`, `=` and various other symbols is handled in this library by default. Unfortunately it is very easy to forget about this case when using raw Navigation Component, but you may forget about these unexpected issues with special characters when using this library.
+
+- But unfortunately you have to handle **empty strings** by yourself. Because routes are strings, empty-string arguments lead to missing URL pieces, e.g. `route//arg1=`. And this is handled poorly in Navigation Component. What I can suggest is using nullable `String` instead and handling empty strings as `null`. Or adding some additional decoration to all your strings like wrapping them in quotation marks. But it's all up to you because these values may come from your deep-links and I don't want to mess up this.
 
 ### What else is generated
 
@@ -242,3 +233,9 @@ NavHost(navController, startDestination = Routes.toMainScreen()) {
 ## Sample
 
 Please explore the `sample` module within the project for better understanding of capabilities of the library.
+
+## What's next
+
+Unfortunately, Navigation for Compose is very dissapointing. This library is just a great example of how complicated and weird the idea of *routes* is. There are definitely ways to implement navigation much simpler.
+
+For now I will provide reasonable support for this library as long as I feel it is helping someone.
