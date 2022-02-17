@@ -1,14 +1,10 @@
 # Safe Arguments Generator
 
-Yet another attempt to add safe arguments to [Compose Navigation](https://developer.android.com/jetpack/compose/navigation).
+[Navigation Component for Compose](https://developer.android.com/jetpack/compose/navigation) doesn't support safe arguments out of the box as well as requires a lot of boilerplate code. This library fills in this missing part. 
 
-## Why
+The main focus of the library is a simplified approach for declaring routes and arguments. What's more, this library *doesn't force you* to declare your screen composables in any particular way, which is in my opinion an overkill in several other existing safe-args projects.
 
-Since routes in Navigation Component don't support safe arguments out of the box as well as require a lot of boilerplate code, this library was meant to be made.
-
-The main focus of the library is a simplified approach for declaring routes and arguments. What's more, this library *doesn't force you* to declare your screen composables in any particular way, which was a deal-breaker in several other existing safe-args projects.
-
-## Ok, show me the code
+## Usage
 
 You declare all routes within a single interface like this:
 
@@ -48,11 +44,9 @@ navController.navigate(Routes.toSecondScreen(id = 123))
 
 As simple as that.
 
-There is of course a bunch of other useful features that will be explained further. But first...
+## Setup
 
-## Add the library to your project
-
-The library uses [Kotlin Symbol Processing](https://github.com/google/ksp) for annotation processing. Here is what you need to add the module of your project where you are going to declare routes:
+The library uses [Kotlin Symbol Processing](https://github.com/google/ksp) for annotation processing. Here is what you need to add to the module of your project where you are going to declare routes:
 
 ```kotlin
 plugins {
@@ -107,9 +101,11 @@ Note that there is no limitation on the number of `GenerateRoutes`-annotated int
 
 ### Important notices on String type
 
-- URL-encoding of special characters such as `/`, `?`, `=` and various other symbols is handled in this library by default. Unfortunately, it is very easy to forget about this case when using raw Navigation Component, but you may forget about these unexpected issues with special characters when using this library.
+- URL-encoding of special characters such as `/`, `?`, `=` and various other symbols is handled in this library by default.
 
-- But unfortunately, you have to handle **empty strings** by yourself. Because routes are strings, empty-string arguments lead to missing URL pieces, e.g. `route//arg1=`. And this is handled poorly in Navigation Component. What I can suggest is using nullable `String` instead and handling empty strings as `null`. Or adding some additional decoration to all your strings, like wrapping them in quotation marks. But it's all up to you because these values may come from your deep-links and I don't want to mess up this.
+- Do not pass empty Strings as required argument values. They lead to invalid routes and Navigation Component crashes.
+
+- Empty strings passed as optional argument values will become `null` when received.
 
 ### What else is generated
 
@@ -239,3 +235,5 @@ Please explore the `sample` module within the project for better understanding o
 Unfortunately, Navigation for Compose is very disappointing. This library is just a great example of how complicated and weird the idea of *routes* is. There are definitely ways to implement navigation much simpler.
 
 For now, I will provide reasonable support for this library as long as I feel it is helping someone.
+
+**UPDATE (17-Feb-2022):** I've recently implemented my own type-safe navigation library for Compose. Check it out: [Compose Navigation Reimagined](https://github.com/olshevski/compose-navigation-reimagined)
