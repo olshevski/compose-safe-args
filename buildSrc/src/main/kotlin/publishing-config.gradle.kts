@@ -3,10 +3,18 @@ plugins {
     signing
 }
 
+fun createPublicationName() = name.split("-")
+    .mapIndexed { index, s ->
+        if (index == 0) s else s.capitalize()
+    }
+    .joinToString(separator = "")
+
 afterEvaluate {
     publishing {
-        publications.all {
-            if (this is MavenPublication) {
+        publications {
+            create<MavenPublication>(createPublicationName()) {
+                from(components.findByName("release") ?: components.findByName("java")!!)
+
                 pom {
                     name.set("Compose Safe Args")
                     description.set("Missing safe arguments generator for Compose Navigation")

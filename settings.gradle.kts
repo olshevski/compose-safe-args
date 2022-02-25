@@ -1,24 +1,8 @@
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
-    }
-    plugins {
-        val androidPluginVersion = "7.0.4"
-        id("com.android.application") version androidPluginVersion
-        id("com.android.library") version androidPluginVersion
-
-        val kotlinPluginVersion: String = "1.5.31"
-        kotlin("android") version kotlinPluginVersion
-        kotlin("jvm") version kotlinPluginVersion
-
-        id("org.jetbrains.dokka") version "1.5.31"
-        id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-        id("com.google.devtools.ksp") version "1.5.31-1.0.1"
-        id("com.github.ben-manes.versions") version "0.39.0"
     }
 }
 

@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    id("com.google.devtools.ksp")
+    plugin(Plugin.Android.Library)
+    plugin(Plugin.Kotlin.Android)
+    plugin(Plugin.Ksp)
 }
 
 android {
@@ -43,8 +43,8 @@ android {
 }
 
 dependencies {
-    implementation(projects.apiCompose)
-    ksp(projects.ksp)
-    testImplementation(Deps.Kotest.RunnerJunit5)
-    testImplementation(Deps.Kotest.FrameworkDataset)
+    implementation(project(":api-compose"))
+    ksp(project(":ksp"))
+    testImplementation(Lib.Kotest.RunnerJunit5)
+    testImplementation(Lib.Kotest.FrameworkDataset)
 }
