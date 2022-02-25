@@ -51,7 +51,7 @@ The library uses [Kotlin Symbol Processing](https://github.com/google/ksp) for a
 ```kotlin
 plugins {
     // ...
-    id("com.google.devtools.ksp") version "1.5.31-1.0.1"
+    id("com.google.devtools.ksp") version "1.6.10-1.0.4"
 }
 
 android {
@@ -69,8 +69,8 @@ android {
 
 dependencies {
     // ...
-    ksp("dev.olshevski.safeargs:ksp:1.1.0")
-    implementation("dev.olshevski.safeargs:api-compose:1.1.0")
+    ksp("dev.olshevski.safeargs:ksp:1.2.0")
+    implementation("dev.olshevski.safeargs:api-compose:1.2.0")
 }
 ```
 
@@ -79,7 +79,7 @@ dependencies {
 If you for some reason want to use this library in a non-Compose application, or you just want to write your own custom `NavGraphBuilder` extensions you can use:
 
 ```kotlin
-implementation("dev.olshevski.safeargs:api:1.1.0")
+implementation("dev.olshevski.safeargs:api:1.2.0")
 ```
 instead of `api-compose`. The `api` artifact contains only essential declarations without any Compose dependencies.
 
