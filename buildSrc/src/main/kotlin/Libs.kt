@@ -1,4 +1,4 @@
-object Lib {
+object Libs {
 
     object Ksp {
         const val SymbolProcessingApi = "com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.4"

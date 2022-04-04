@@ -1,7 +1,7 @@
 plugins {
-    plugin(Plugin.Android.Application)
-    plugin(Plugin.Kotlin.Android)
-    plugin(Plugin.Ksp)
+    plugin(Plugins.Android.Application)
+    plugin(Plugins.Kotlin.Android)
+    plugin(Plugins.Ksp)
 }
 
 android {
@@ -32,7 +32,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Lib.Compose.Version
+        kotlinCompilerExtensionVersion = Libs.Compose.Version
     }
 
     packagingOptions {
@@ -61,15 +61,15 @@ dependencies {
     implementation(project(":api-compose"))
     ksp(project(":ksp"))
 
-    implementation(Lib.Compose.Material)
-    debugImplementation(Lib.Compose.UiTooling)
-    implementation(Lib.Compose.UiToolingPreview)
-    implementation(Lib.Activity.Compose)
-    implementation(Lib.Navigation.Compose)
-    implementation(Lib.Lifecycle.ViewModel.Ktx)
-    implementation(Lib.Lifecycle.ViewModel.Compose)
-    implementation(Lib.Lifecycle.ViewModel.SavedState)
+    implementation(Libs.Compose.Material)
+    debugImplementation(Libs.Compose.UiTooling)
+    implementation(Libs.Compose.UiToolingPreview)
+    implementation(Libs.Activity.Compose)
+    implementation(Libs.Navigation.Compose)
+    implementation(Libs.Lifecycle.ViewModel.Ktx)
+    implementation(Libs.Lifecycle.ViewModel.Compose)
+    implementation(Libs.Lifecycle.ViewModel.SavedState)
 
-    androidTestImplementation(Lib.Test.Core)
-    androidTestImplementation(Lib.Compose.UiTestJunit4)
+    androidTestImplementation(Libs.Test.Core)
+    androidTestImplementation(Libs.Compose.UiTestJunit4)
 }

@@ -1,7 +1,7 @@
 plugins {
-    plugin(Plugin.Android.Library)
-    plugin(Plugin.Kotlin.Android)
-    plugin(Plugin.Ksp)
+    plugin(Plugins.Android.Library)
+    plugin(Plugins.Kotlin.Android)
+    plugin(Plugins.Ksp)
 }
 
 android {
@@ -45,6 +45,6 @@ android {
 dependencies {
     implementation(project(":api-compose"))
     ksp(project(":ksp"))
-    testImplementation(Lib.Kotest.RunnerJunit5)
-    testImplementation(Lib.Kotest.FrameworkDataset)
+    testImplementation(Libs.Kotest.RunnerJunit5)
+    testImplementation(Libs.Kotest.FrameworkDataset)
 }

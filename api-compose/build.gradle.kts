@@ -1,6 +1,6 @@
 plugins {
-    plugin(Plugin.Android.Library)
-    plugin(Plugin.Kotlin.Android)
+    plugin(Plugins.Android.Library)
+    plugin(Plugins.Kotlin.Android)
     `publishing-config`
 }
 
@@ -31,7 +31,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Lib.Compose.Version
+        kotlinCompilerExtensionVersion = Libs.Compose.Version
     }
 
     publishing {
@@ -44,5 +44,5 @@ android {
 
 dependencies {
     api(project(":api"))
-    api(Lib.Navigation.Compose)
+    api(Libs.Navigation.Compose)
 }

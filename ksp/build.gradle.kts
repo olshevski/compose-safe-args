@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    plugin(Plugin.Kotlin.Jvm)
+    plugin(Plugins.Kotlin.Jvm)
     `publishing-config`
 }
 
@@ -19,8 +19,8 @@ tasks.withType<KotlinCompile> {
 }
 
 dependencies {
-    implementation(Lib.Ksp.SymbolProcessingApi)
-    implementation(Lib.KotlinPoet.Ksp) {
+    implementation(Libs.Ksp.SymbolProcessingApi)
+    implementation(Libs.KotlinPoet.Ksp) {
         exclude(module = "kotlin-reflect")
     }
 }

@@ -1,8 +1,8 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    plugin(Plugin.NexusPublishing)
-    plugin(Plugin.BenManesVersions)
+    plugin(Plugins.NexusPublishing)
+    plugin(Plugins.BenManesVersions)
 }
 
 tasks.withType<DependencyUpdatesTask> {

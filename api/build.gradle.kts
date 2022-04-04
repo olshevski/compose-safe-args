@@ -1,6 +1,6 @@
 plugins {
-    plugin(Plugin.Android.Library)
-    plugin(Plugin.Kotlin.Android)
+    plugin(Plugins.Android.Library)
+    plugin(Plugins.Kotlin.Android)
     `publishing-config`
 }
 
@@ -41,6 +41,6 @@ android {
 }
 
 dependencies {
-    api(Lib.Navigation.Runtime)
-    testImplementation(Lib.Kotest.RunnerJunit5)
+    api(Libs.Navigation.Runtime)
+    testImplementation(Libs.Kotest.RunnerJunit5)
 }
