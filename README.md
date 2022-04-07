@@ -69,8 +69,8 @@ android {
 
 dependencies {
     // ...
-    ksp("dev.olshevski.safeargs:ksp:1.2.0")
-    implementation("dev.olshevski.safeargs:api-compose:1.2.0")
+    ksp("dev.olshevski.safeargs:ksp:1.2.1")
+    implementation("dev.olshevski.safeargs:api-compose:1.2.1")
 }
 ```
 
@@ -79,7 +79,7 @@ dependencies {
 If you for some reason want to use this library in a non-Compose application, or you just want to write your own custom `NavGraphBuilder` extensions you can use:
 
 ```kotlin
-implementation("dev.olshevski.safeargs:api:1.2.0")
+implementation("dev.olshevski.safeargs:api:1.2.1")
 ```
 instead of `api-compose`. The `api` artifact contains only essential declarations without any Compose dependencies.
 
