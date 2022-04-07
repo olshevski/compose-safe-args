@@ -26,12 +26,6 @@ android {
         }
     }
 
-    testOptions {
-        unitTests.all {
-            it.useJUnitPlatform()
-        }
-    }
-
     publishing {
         singleVariant("release") {
             withSourcesJar()
@@ -42,5 +36,5 @@ android {
 
 dependencies {
     api(Libs.Navigation.Runtime)
-    testImplementation(Libs.Kotest.RunnerJunit5)
+    lintPublish(project(":lint"))
 }

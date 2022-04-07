@@ -1,11 +1,7 @@
 object Libs {
 
-    object Ksp {
-        const val SymbolProcessingApi = "com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.4"
-    }
-
-    object KotlinPoet {
-        const val Ksp = "com.squareup:kotlinpoet-ksp:1.10.2"
+    object Activity {
+        const val Compose = "androidx.activity:activity-compose:1.4.0"
     }
 
     object Compose {
@@ -17,8 +13,12 @@ object Libs {
         const val UiTestJunit4 = "androidx.compose.ui:ui-test-junit4:$Version"
     }
 
-    object Activity {
-        const val Compose = "androidx.activity:activity-compose:1.4.0"
+    object Google {
+        const val Truth = "com.google.truth:truth:1.1.3"
+    }
+
+    object JUnit {
+        const val Juniper = "org.junit.jupiter:junit-jupiter:5.8.2"
     }
 
     object Lifecycle {
@@ -31,16 +31,35 @@ object Libs {
         }
     }
 
+    object Lint {
+        private const val Version = "30.1.2"
+        const val Api = "com.android.tools.lint:lint-api:$Version"
+        const val Checks = "com.android.tools.lint:lint-checks:$Version"
+        const val Test = "com.android.tools.lint:lint-tests:$Version"
+    }
+
     object Navigation {
         private const val Version = "2.4.1"
         const val Runtime = "androidx.navigation:navigation-runtime:$Version"
         const val Compose = "androidx.navigation:navigation-compose:$Version"
     }
 
+    object Kotlin {
+        const val Stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${Plugins.Kotlin.Version}"
+    }
+
     object Kotest {
         private const val Version = "5.1.0"
         const val RunnerJunit5 = "io.kotest:kotest-runner-junit5:$Version"
         const val FrameworkDataset = "io.kotest:kotest-framework-datatest:$Version"
+    }
+
+    object KotlinPoet {
+        const val Ksp = "com.squareup:kotlinpoet-ksp:1.10.2"
+    }
+
+    object Ksp {
+        const val SymbolProcessingApi = "com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.4"
     }
 
     object Test {

@@ -12,10 +12,11 @@ object Plugins {
         private const val Version = "7.1.2"
         val Application = PluginSpec("com.android.application", Version)
         val Library = PluginSpec("com.android.library", Version)
+        val Lint = PluginSpec("com.android.lint", Version)
     }
 
     object Kotlin {
-        private const val Version = "1.6.10"
+        const val Version = "1.6.10"
         val Android = PluginSpec("org.jetbrains.kotlin.android", Version)
         val Jvm = PluginSpec("org.jetbrains.kotlin.jvm", Version)
     }
