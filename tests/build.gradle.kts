@@ -45,7 +45,6 @@ android {
 dependencies {
     implementation(project(":api-compose"))
     ksp(project(":ksp"))
-    lintChecks(project(":lint"))
 
     testImplementation(Libs.Kotest.RunnerJunit5)
     testImplementation(Libs.Kotest.FrameworkDataset)

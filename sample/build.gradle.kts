@@ -60,7 +60,6 @@ android {
 dependencies {
     implementation(project(":api-compose"))
     ksp(project(":ksp"))
-    lintChecks(project(":lint"))
 
     implementation(Libs.Compose.Material)
     debugImplementation(Libs.Compose.UiTooling)
