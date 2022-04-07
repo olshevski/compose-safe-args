@@ -22,7 +22,7 @@ object Libs {
     }
 
     object Lifecycle {
-        private const val Version = "2.4.0"
+        private const val Version = "2.4.1"
 
         object ViewModel {
             const val Ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$Version"
@@ -32,14 +32,14 @@ object Libs {
     }
 
     object Lint {
-        private const val Version = "30.1.2"
+        private const val Version = "30.1.3"
         const val Api = "com.android.tools.lint:lint-api:$Version"
         const val Checks = "com.android.tools.lint:lint-checks:$Version"
         const val Test = "com.android.tools.lint:lint-tests:$Version"
     }
 
     object Navigation {
-        private const val Version = "2.4.1"
+        private const val Version = "2.4.2"
         const val Runtime = "androidx.navigation:navigation-runtime:$Version"
         const val Compose = "androidx.navigation:navigation-compose:$Version"
     }
@@ -49,17 +49,18 @@ object Libs {
     }
 
     object Kotest {
-        private const val Version = "5.1.0"
+        private const val Version = "5.2.2"
         const val RunnerJunit5 = "io.kotest:kotest-runner-junit5:$Version"
         const val FrameworkDataset = "io.kotest:kotest-framework-datatest:$Version"
     }
 
     object KotlinPoet {
-        const val Ksp = "com.squareup:kotlinpoet-ksp:1.10.2"
+        const val Ksp = "com.squareup:kotlinpoet-ksp:1.11.0"
     }
 
     object Ksp {
-        const val SymbolProcessingApi = "com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.4"
+        val SymbolProcessingApi =
+            "com.google.devtools.ksp:symbol-processing-api:${Plugins.Ksp.version}"
     }
 
     object Test {
