@@ -1,4 +1,4 @@
-# Safe Arguments Generator
+# Safe Arguments Generator (Discontinued). Check my type-safe navigation library instead: [Compose Navigation Reimagined](https://github.com/olshevski/compose-navigation-reimagined)
 
 [Navigation Component for Compose](https://developer.android.com/jetpack/compose/navigation) doesn't support safe arguments out of the box as well as requires a lot of boilerplate code. This library fills in this missing part. 
 
@@ -229,11 +229,3 @@ NavHost(navController, startDestination = Routes.toMainScreen()) {
 ## Sample
 
 Please explore the `sample` module within the project for better understanding of capabilities of the library.
-
-## What's next
-
-Unfortunately, Navigation for Compose is very disappointing. This library is just a great example of how complicated and weird the idea of *routes* is. There are definitely ways to implement navigation much simpler.
-
-For now, I will provide reasonable support for this library as long as I feel it is helping someone.
-
-**UPDATE (17-Feb-2022):** I've recently implemented my own type-safe navigation library for Compose. Check it out: [Compose Navigation Reimagined](https://github.com/olshevski/compose-navigation-reimagined)
